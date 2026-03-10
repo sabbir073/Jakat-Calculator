@@ -1,65 +1,91 @@
-import Image from "next/image";
+'use client';
 
-export default function Home() {
+import Link from 'next/link';
+import PriceDisplay from '@/components/ui/PriceDisplay';
+import ViewCounter from '@/components/ui/ViewCounter';
+import { useMetalPrices } from '@/lib/hooks/useMetalPrices';
+
+export default function HomePage() {
+  const { prices, isLoading } = useMetalPrices();
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
+    <div className="max-w-lg mx-auto px-4 py-6">
+      {/* Hero */}
+      <div className="text-center mb-6">
+        <div className="text-6xl mb-3">🕌</div>
+        <h1 className="text-2xl font-bold text-primary-800 mb-2">
+          যাকাত ক্যালকুলেটর
+        </h1>
+        <ViewCounter />
+        <p className="text-sm text-gray-500 leading-relaxed mt-2">
+          পাঁচ মাযহাব সমর্থিত সম্পূর্ণ যাকাত হিসাব অ্যাপ<br />
+          হাদিস ভিত্তিক — সহীহ বুখারী ও মুসলিম অনুযায়ী
+        </p>
+      </div>
+
+      {/* Live prices */}
+      <div className="mb-6">
+        <PriceDisplay
+          goldPrice={prices?.goldPerGramBDT || 0}
+          silverPrice={prices?.silverPerGramBDT || 0}
+          source={prices?.source || ''}
+          timestamp={prices?.timestamp || ''}
+          isLoading={isLoading}
         />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+      </div>
+
+      {/* CTA */}
+      <Link
+        href="/calculator"
+        className="block w-full py-4 rounded-2xl bg-gradient-to-r from-primary-500 to-primary-700 text-white text-center font-bold text-lg shadow-xl hover:shadow-2xl transition-all mb-6"
+      >
+        🧮 যাকাত হিসাব শুরু করুন
+      </Link>
+
+      {/* Features */}
+      <div className="grid grid-cols-2 gap-3 mb-6">
+        {[
+          { icon: '📖', title: '৫ মাযহাব', desc: 'হানাফি, শাফেয়ী, মালেকি, হাম্বলি, আহলে হাদিস' },
+          { icon: '✨', title: 'লাইভ দর', desc: 'স্বয়ংক্রিয় সোনা ও রূপার বাজারদর' },
+          { icon: '📊', title: '১৮ ধরনের সম্পদ', desc: 'নগদ, সোনা, স্টক, ক্রিপ্টো, কৃষি, পশু' },
+          { icon: '📱', title: 'অফলাইন সমর্থন', desc: 'ইন্টারনেট ছাড়াও ব্যবহার করুন' },
+        ].map((f, i) => (
+          <div
+            key={i}
+            className="bg-white rounded-xl p-4 border border-gray-100 shadow-sm"
+          >
+            <span className="text-2xl">{f.icon}</span>
+            <h3 className="font-bold text-sm text-gray-800 mt-2">{f.title}</h3>
+            <p className="text-xs text-gray-500 mt-1">{f.desc}</p>
+          </div>
+        ))}
+      </div>
+
+      {/* Hadith quote */}
+      <div className="bg-primary-50 rounded-2xl p-5 border border-primary-100">
+        <p className="text-sm text-primary-800 leading-relaxed text-center italic">
+          &ldquo;ইসলামের পাঁচটি স্তম্ভ — আল্লাহ ছাড়া কোনো ইলাহ নেই ও মুহাম্মদ (সা.) তাঁর রাসূল এই সাক্ষ্য দেওয়া, সালাত কায়েম করা, যাকাত দেওয়া, হজ্জ করা ও রমযানের রোযা রাখা।&rdquo;
+        </p>
+        <p className="text-xs text-primary-600 text-center mt-2">
+          — সহীহ বুখারী ৮, সহীহ মুসলিম ১৬
+        </p>
+      </div>
+
+      {/* Quick info */}
+      <div className="mt-6 space-y-3">
+        <h3 className="font-bold text-gray-700">যাকাত কখন ফরজ?</h3>
+        <div className="text-sm text-gray-600 space-y-2">
+          <p>
+            ১. সম্পদ <strong>নিসাব</strong> পরিমাণ পৌঁছাতে হবে (সোনা ৮৫-৮৭.৪৮ গ্রাম অথবা রূপা ৫৯৫-৬১২.৩৬ গ্রাম মাযহাব ভেদে)
+          </p>
+          <p>
+            ২. সম্পদ নিসাব পরিমাণে থাকা অবস্থায় <strong>১ হিজরি বছর</strong> (হাওল) অতিবাহিত হতে হবে
+          </p>
+          <p>
+            ৩. যাকাতের হার সাধারণত <strong>২.৫%</strong> (এক-চল্লিশ ভাগের এক ভাগ)
           </p>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
+      </div>
     </div>
   );
 }
