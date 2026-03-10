@@ -3,6 +3,7 @@ import { Hind_Siliguri } from 'next/font/google';
 import './globals.css';
 import BottomNav from '@/components/ui/BottomNav';
 import Footer from '@/components/ui/Footer';
+import PWAInstall from '@/components/ui/PWAInstall';
 
 const hindSiliguri = Hind_Siliguri({
   weight: ['400', '600', '700'],
@@ -151,6 +152,7 @@ export default function RootLayout({
           <Footer />
         </main>
         <BottomNav />
+        <PWAInstall />
       </body>
     </html>
   );
