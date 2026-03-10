@@ -11,7 +11,7 @@ const hindSiliguri = Hind_Siliguri({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL || 'https://zakat-calculator.vercel.app'),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL || 'https://jakat.netlify.app'),
   title: {
     default: 'যাকাত ক্যালকুলেটর — পাঁচ মাযহাব সমর্থিত যাকাত হিসাব অ্যাপ',
     template: '%s | যাকাত ক্যালকুলেটর',
